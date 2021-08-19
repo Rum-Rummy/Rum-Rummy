@@ -1,0 +1,47 @@
+import xapi from 'xapi';
+
+function log(entry) {
+    console.log(entry);
+}
+
+log ('Private Mode');
+
+// const Micon = 'on';
+// const Micoff = 'off';
+const Lineon = 'on';
+const Lineoff = 'off';
+
+// Outgoing Audio to Encoder & Listening device On/Off
+xapi.event.on('UserInterface Extensions Widget Action', (event) => {
+  if (event.WidgetId == "private_1") {
+      console.log ('Private Mode');
+      console.log(event.Value);
+      switch (event.Value) {
+        case '1': // Private Mode
+            log ('Private Mode on');
+            xapi.config.set('audio output HDMI 1 Mode', Lineoff);
+            xapi.config.set('audio output line 3 Mode', Lineoff);
+            console.log ('Private Mode');
+            xapi.command ('userinterface message textline display', {
+              Text: "Private Mode Enabled",
+              X: 500,
+              Y: 700,
+            });
+            break;
+        case '2': // Private Mode off, Outgoing feed back on
+            log ('Private Mode off');
+            xapi.config.set('audio output HDMI 1 Mode', Lineon);
+            xapi.config.set('audio output line 3 Mode', Lineon);     
+            console.log ('Private Mode is off!!');
+            xapi.command ('userinterface message textline display', {
+              Text: "Normal Mode on",
+              X: 500,
+              Y: 700,
+              Duration: 10
+            });
+            break;
+        default:
+        }
+    return;
+  }        
+});
