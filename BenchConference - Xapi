@@ -1,0 +1,67 @@
+import xapi from 'xapi';
+
+function log(entry) {
+    console.log(entry);
+}
+
+log ('mic_80');
+
+const Micon = 'on';
+const Micoff = 'off';
+const Lineon = 'on';
+const Lineoff = 'off';
+
+// Microphone(baring Judge), Line Out, Encoder(HDMI3) Mute
+xapi.event.on('UserInterface Extensions Widget Action', (event) => {
+  if (event.WidgetId == "mic_80") {
+      console.log ('Bench Conference');
+      console.log(event.Value);
+      switch (event.Value) {
+        case 'on': // Microphone 2 On, Everything Off
+            log ('Bench Conferenc Mode on');
+            xapi.config.set('audio input microphone 2 Mode', Micon);
+            xapi.config.set('audio input microphone 1 Mode', Micoff);
+            xapi.config.set('audio input microphone 3 Mode', Micoff);
+            xapi.config.set('audio input microphone 4 Mode', Micoff);
+            xapi.config.set('audio input microphone 5 Mode', Micoff);
+            xapi.config.set('audio input microphone 6 Mode', Micoff);
+            xapi.config.set('audio input microphone 7 Mode', Micoff);
+            xapi.config.set('audio input microphone 8 Mode', Micoff);
+            xapi.config.set('audio output line 1 Mode', Lineoff);
+            xapi.config.set('audio output line 2 Mode', Lineoff);
+            xapi.config.set('audio output line 3 Mode', Lineoff);
+            xapi.config.set('audio output HDMI 1 Mode', Lineoff);
+            console.log ('Bench Conference');
+            xapi.command ('userinterface message textline display', {
+              Text: "Bench Conference",
+              X: 10000,
+              Y: 1000,
+            });
+            break;
+        case 'off': // Microphone 1 Off
+            log ('Bench Conferenc Mode off');
+            xapi.config.set('audio input microphone 2 Mode', Micon);
+            xapi.config.set('audio input microphone 1 Mode', Micon);
+            xapi.config.set('audio input microphone 3 Mode', Micon);
+            xapi.config.set('audio input microphone 4 Mode', Micon);
+            xapi.config.set('audio input microphone 5 Mode', Micon);
+            xapi.config.set('audio input microphone 6 Mode', Micon);
+            xapi.config.set('audio input microphone 7 Mode', Micon);
+            xapi.config.set('audio input microphone 8 Mode', Micon);
+            xapi.config.set('audio output line 1 Mode', Lineon);
+            xapi.config.set('audio output line 2 Mode', Lineon);
+            xapi.config.set('audio output line 3 Mode', Lineon);
+            xapi.config.set('audio output HDMI 1 Mode', Lineon);      
+            console.log ('Bench Conferenc Mode off!!');
+            xapi.command ('userinterface message textline display', {
+              Text: "Bench Conference Off",
+              X: 10000,
+              Y: 2000,
+              Duration: 10
+            });
+            break;
+        default:
+        }
+    return;
+  }        
+});
