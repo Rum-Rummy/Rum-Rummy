@@ -1,0 +1,34 @@
+const xapi = require('xapi');
+
+function log(entry) {
+    console.log(entry);
+}
+
+log ('Witness View');
+
+// Listen to clicks on buttons: the buttons can either be pressed or released
+xapi.event.on('UserInterface Extensions Widget Action', (event) => {
+  if (event.Type == "released" && event.WidgetId == "witness_1") {
+      console.log ('Witness View Change');
+      xapi.command('cameras speakertrack activate');
+      console.log ('speakertrack Activated Quad!!!');
+      switch (event.Value) {
+        case '1':  // Courtroom Overview + Judge 
+              log ('Changing Layout to Conn 1 + 2'); // using the whole string
+              xapi.command('Video Input SetMainVideoSource', {
+                ConnectorId: [1,2],  // the max connectorid's is up to 4.
+            });
+            console.log ('Equal layout Quad'); 
+             break;
+        case '2':      // Adding in Witness Camera
+             log ('Changing Layout Conn 3'); // using connectorid's 
+             xapi.command('video input setmainvideosource', {
+               Connectorid: [1,2,3], 
+             });
+            console.log ('Equal layout P60');
+            break;
+        default:
+        }
+    return;
+  }        
+});
