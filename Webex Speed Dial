@@ -1,0 +1,63 @@
+const xapi = require('xapi');
+
+const MYSPEED_DIAL_NUMBERA = 'https://delawareohio.webex.com/meet/CourtroomA';
+const MYSPEED_DIAL_NUMBERB = 'https://delawareohio.webex.com/meet/CourtroomB';
+const MYSPEED_DIAL_NUMBERC = 'https://delawareohio.webex.com/meet/CourtroomC';
+const MYSPEED_DIAL_NUMBER_JudgeR = 'KRohrer@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_JudgeH = 'judgehemmeter@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_MagB = 'abunner@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_MagP = 'Kpelanda@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_Jkudela = 'jkudela@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_Pdattilo = 'pdattilo@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_Atravis = 'ATravis@delaware.call.ciscospark.com';
+const MYSPEED_DIAL_NUMBER_Jrumbalski = 'Jrumbalski@delaware.call.ciscospark.com';
+
+
+xapi.event.on('UserInterface Extensions Widget Action', (event) => {
+    if (event.WidgetId == "speeddial_a") {
+        xapi.command("dial", {Number: MYSPEED_DIAL_NUMBERA});
+    }
+    if (event.WidgetId == "speeddial_b") {
+        xapi.command("dial", {Number: MYSPEED_DIAL_NUMBERB});
+    }
+    if (event.WidgetId == "speeddial_c") {  
+        xapi.command("dial", {Number: MYSPEED_DIAL_NUMBERC});
+    }
+    if (event.Type == "released" && event.WidgetId == "speeddial_court") {
+        unsetvalue_fr_grey(); // grays out Buttons
+        switch (event.Value) {
+          case 'JudgeR': // Judge Rohrer
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_JudgeR});
+              break;
+          case 'JudgeH': // Judge Hemmeter
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_JudgeH});
+              break;
+          case 'MagB': // Magistate Bunner
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_MagB});
+              break;
+          case 'MagP': // Magistrate Pelanda
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_MagP});
+              break;
+          case 'Jkudela': // Justin Kudela
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_Jkudela});
+              break;
+          case 'Pdattilo': // Pat Dattilo
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_Pdattilo});
+              break;
+          case 'Atravis': // Anna Travis
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_Atravis});
+              break;
+          case 'Jrumbalski': // Jacob Rumbalski
+                xapi.command("dial", {Number: MYSPEED_DIAL_NUMBER_Jrumbalski});
+              break;         
+        default:
+        }
+    return;
+  }
+});
+// Greys out the buttons on the User Speed Dials
+function unsetvalue_fr_grey () {
+  xapi.command ('userinterface extensions widget unsetvalue', {
+    widgetId: "speeddial_court"
+    });
+}
